@@ -24,7 +24,7 @@ admin.add_view(ModelView(Vote, db.session))
 
 @app.route('/')
 def home():
-	return render_template("home.html")
+	return render_template("home.html", presentations=Presentation.query.all())
 
 
 if __name__ == '__main__':
