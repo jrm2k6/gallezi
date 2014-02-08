@@ -5,6 +5,11 @@ Prezi gallery with vote interface.
 
 
 Libraries used:
+Backend
+
+- flask
+- flask-admin
+- sqlalchemy
 
 Front-end
 
