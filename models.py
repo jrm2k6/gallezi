@@ -22,13 +22,15 @@ class User(db.Model):
 class Presentation(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	url = db.Column(db.String(200), unique=True)
+	owner = db.Column(db.String(2000))
 	#votes = db.relationship('Vote', backref='vote_presentation', lazy='dynamic')
 
-	def __init(self, url=''):
+	def __init(self, url='', owner=''):
 		self.url = url
+		owner = owner
 
 	def __repr__(self):
-		return '<User %r>' % self.url
+		return '<Presentation %r %r>' % (self.url, self.owner)
 
 	def __str__(self):
 		return self.url
@@ -44,7 +46,7 @@ class Vote(db.Model):
 		self.presentation = presentation
 
 	def __repr__(self):
-		return '<Vote %r>' % self.presentation.url + ' ' + self.user.email
+		return '<Vote %r %r>' % (self.presentation.url, self.user.email)
 
 	def __str__(self):
 		return self.user.email + ' ' + self.presentation.url
