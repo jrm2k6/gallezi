@@ -4,16 +4,17 @@ gallezi
 Prezi gallery with vote interface.
 
 
-Libraries used:
-Backend
+####Libraries used:####
 
-- flask
-- flask-admin
-- sqlalchemy
+#####1.Backend#####
 
-Front-end
+     - flask
+     - flask-admin
+     - sqlalchemy
 
-- bootstrap 3.0
-- font-awesome
-- masonry
-- jquery
+#####2. Front-end#####
+
+     - bootstrap 3.0
+     - font-awesome
+     - masonry
+     - jquery
