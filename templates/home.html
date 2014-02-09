@@ -2,9 +2,10 @@
 <head>
 	<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 	<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/home.css') }}"></link>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 	<script type=text/javascript src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}"></script>
 	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+	<script type=text/javascript src="{{ url_for('static', filename='js/home.js') }}"></script>
 </head>
 <body>
 	<div class="masonry js-masonry"  data-masonry-options='{ "columnWidth": ".iframe-prezi", "itemSelector": ".iframe-prezi", "isFitWidth": true, "gutter": 10}'>
@@ -16,8 +17,9 @@
 				<div class="owners">
 				{{ presentation.owner }}
 				</div>
-				<div class="vote-btn">
-				<a class="btn" href="#">
+				<div class="vote">
+				<a class="btn vote-btn" data-presentation= "{{ presentation.id }}"
+				href="#">
 	  			<i class="fa fa fa-thumbs-o-up"></i></a>
 	  			</div>
 	  		</div>
