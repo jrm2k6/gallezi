@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask.ext.admin import Admin
 from flask.ext.admin.contrib.sqla import ModelView
+from adminviews import GalleryUserView, GalleryPresentationView
 from models import db, User, Presentation, Vote
 
 
@@ -18,9 +19,9 @@ def create_app(db):
 
 create_app(db)
 admin = Admin(app)
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Presentation, db.session))
 admin.add_view(ModelView(Vote, db.session))
+admin.add_view(GalleryUserView(db.session))
+admin.add_view(GalleryPresentationView(db.session))
 
 @app.route('/')
 def home():
