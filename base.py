@@ -5,7 +5,7 @@ from adminviews import GalleryUserView, GalleryPresentationView
 from models import db, User, Presentation, Vote
 from authentication import requires_auth
 from flask.ext.login import LoginManager, login_user, login_required, \
-logout_user
+logout_user, current_user
 from forms import LoginForm
 import config
 
@@ -39,12 +39,15 @@ def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
     	if (form.password.data == config.SECRET):
-    		user = get_user(form.email.data) 
+    		user = get_user(form.email.data)
+    		message_welcome = "Welcome back!"
     		if user is None:
+    			message_welcome = "Welcome!"
     			user = add_user(form.email.data)
-        	login_user(user)
-        	flash("Logged in successfully.")
-        	return render_template("home.html", presentations=Presentation.query.all())
+        	login_user(user, True)
+        	flash(message_welcome, 'info')
+        	return render_template("home.html", presentations=Presentation.query.all(), 
+        		current_user=current_user)
     	else:
     		flash(u'Invalid password provided', 'error')
     return render_template("login.html", form=form)
@@ -64,15 +67,27 @@ def add_user(email):
 	db.session.commit()
 	return user
 
+def get_vote(id_presentation, id_user):
+	return Vote.query.filter_by(presentation=id_presentation, user=id_user).first()
+
+
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-	return render_template("home.html", presentations=Presentation.query.all())
+	return render_template("home.html", presentations=Presentation.query.all(), 
+		current_user=current_user)
 
-@app.route('/vote/<int:id_presentation>/<int:id_user>', methods=['POST'])
-def vote(id_presentation, id_user):
-	vote = Vote(id_presentation, id_user)
-	db.session.add(vote)
+@app.route('/vote/<int:id_presentation>', methods=['POST'])
+@login_required
+def vote(id_presentation):
+	print 'id_presentation' + str(id_presentation) 
+	vote = get_vote(id_presentation, current_user.id)
+	if vote is None:
+		print 'vote is none'
+		vote = Vote(id_presentation, current_user.id)
+		db.session.add(vote)
+	else:
+		db.session.delete(vote)
 	db.session.commit()
 	resp = Response({}, status=200, mimetype='application/json')
 	return resp
