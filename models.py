@@ -53,12 +53,12 @@ class Vote(db.Model):
 	presentation = db.Column(db.Integer, db.ForeignKey('presentation.id'))
 	user = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-	def __init__(self, user=None, presentation=None):
-		self.user = user
+	def __init__(self, presentation=None, user=None):
 		self.presentation = presentation
+		self.user = user
 
 	def __repr__(self):
-		return '<Vote %r %r>' % (self.presentation.url, self.user.email)
+		return '<Vote %r %r>' % (self.vote_presentation.url, self.vote_user.email)
 
 	def __unicode__(self):
-		return self.user.email + ' ' + self.presentation.url
+		return self.vote_user.email + ' ' + self.vote_presentation.url
