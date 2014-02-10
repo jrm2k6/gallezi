@@ -15,6 +15,9 @@
 <div id="topbar">
 	<a href="/logout">Sign out</a>
 </div>
+{% for category, message in get_flashed_messages(with_categories=true) %}
+      <div class="alert alert-{{category}}" data-dismiss="alert"> {{ message }} </div>
+{% endfor %}
 {% block body %} 
 {% endblock %}
 </body>
