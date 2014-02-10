@@ -10,6 +10,7 @@ Prezi gallery with vote interface.
 
      - flask
      - flask-admin
+     - flask-security
      - sqlalchemy
 
 #####2. Front-end#####
