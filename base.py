@@ -46,7 +46,7 @@ def login():
     			user = add_user(form.email.data)
         	login_user(user, True)
         	flash(message_welcome, 'info')
-        	return render_template("home.html", presentations=Presentation.query.all(), 
+        	return render_template("home.html", presentations=get_presentations_and_is_selected(), 
         		current_user=current_user)
     	else:
     		flash(u'Invalid password provided', 'error')
@@ -70,17 +70,35 @@ def add_user(email):
 def get_vote(id_presentation, id_user):
 	return Vote.query.filter_by(presentation=id_presentation, user=id_user).first()
 
+def get_votes_from_current_user():
+	return Vote.query.filter_by(user=current_user.id)
 
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-	return render_template("home.html", presentations=Presentation.query.all(), 
+	return render_template("home.html", presentations=get_presentations_and_is_selected(), 
 		current_user=current_user)
+
+
+def get_presentations_and_is_selected():
+	presentations = Presentation.query.all()
+	votes = get_votes_from_current_user()
+
+	results = []
+
+	for p in presentations:
+		found = False
+		for v in votes:
+			if v.vote_presentation.id == p.id:
+				found = True
+		results.append((p, found))
+	return results
+
 
 @app.route('/vote/<int:id_presentation>', methods=['POST'])
 @login_required
 def vote(id_presentation):
-	response = ({}, 200)
+	response = ({'OK'}, 200)
 	vote = get_vote(id_presentation, current_user.id)
 	if vote is None :
 		is_allowed_to_vote = check_number_votes_for_current_user() < config.MAXIMUM_NUMBER_VOTES
@@ -92,6 +110,7 @@ def vote(id_presentation):
 	else:
 		db.session.delete(vote)
 	db.session.commit()
+	# import pdb; pdb.set_trace()
 	resp = Response(response[0], status=response[1], mimetype='application/json')
 	return resp
 
@@ -101,6 +120,6 @@ def not_allowed_to_vote_response():
 def check_number_votes_for_current_user():
 	nb_votes = Vote.query.filter_by(user=current_user.id).count()
 	return nb_votes
-	
+
 if __name__ == '__main__':
 	app.run(debug=True)

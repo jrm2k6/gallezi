@@ -2,8 +2,7 @@
 {% block body %}
 	<div class="alert-container"></div>
 	<div class="masonry js-masonry"  data-masonry-options='{ "columnWidth": ".iframe-prezi", "itemSelector": ".iframe-prezi", "isFitWidth": true, "gutter": 10}'>
-		{% for presentation in presentations %}
-
+		{% for (presentation, selected) in presentations %}
 		<div class="iframe-prezi">
 			<iframe id="presentation_iframe" src="{{presentation.url}}?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="300" height="200" frameBorder="0"></iframe>
 			<div class="info">
@@ -11,7 +10,8 @@
 				{{ presentation.owner }}
 				</div>
 				<div class="vote">
-				<a class="btn btn-default vote-btn" data-presentation= "{{ presentation.id }}"
+				<a class="btn 
+				{% if not selected %} btn-default {% else %} btn-primary {% endif %} vote-btn presentation-{{presentation.id}}" data-presentation= "{{ presentation.id }}"
 				href="#">
 	  			<i class="fa fa fa-thumbs-o-up"></i></a>
 	  			</div>
