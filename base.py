@@ -39,12 +39,13 @@ def load_user(id):
 def submit_presentation():
 	form = AddPresentationForm(request.form)
 	if request.method == 'POST' and form.validate():
-		add_presentation(form.url.data, form.owner.data)
-		if current_user.is_authenticated():
-			return render_template("home.html", presentations=get_presentations_and_is_selected(), 
-        		current_user=current_user)
-		else:
-			return redirect(url_for('login'))
+		if form.password.data == PASSWORD_SUBMISSION:
+			add_presentation(form.url.data, form.owner.data)
+			if current_user.is_authenticated():
+				return render_template("home.html", presentations=get_presentations_and_is_selected(), 
+	        		current_user=current_user)
+			else:
+				return redirect(url_for('login'))
 	return render_template("submit-presentation.html", form=form)
 
 
