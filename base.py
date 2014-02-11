@@ -14,7 +14,6 @@ lm = LoginManager()
 app.config.from_object(__name__)
 app.config.from_object('config')
 
-# just because of the session
 app.secret_key = 'this is my secret key'
 
 def create_app(db):
@@ -110,7 +109,6 @@ def vote(id_presentation):
 	else:
 		db.session.delete(vote)
 	db.session.commit()
-	# import pdb; pdb.set_trace()
 	resp = Response(response[0], status=response[1], mimetype='application/json')
 	return resp
 
