@@ -6,7 +6,7 @@ from models import db, User, Presentation, Vote
 from authentication import requires_auth
 from flask.ext.login import LoginManager, login_user, login_required, \
 logout_user, current_user
-from forms import LoginForm
+from forms import LoginForm, AddPresentationForm
 import config
 
 app = Flask(__name__)
@@ -32,6 +32,25 @@ admin.add_view(GalleryPresentationView(db.session))
 @lm.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+
+@app.route("/submit-presentation", methods=["POST", "GET"])
+def submit_presentation():
+	form = AddPresentationForm(request.form)
+	if request.method == 'POST' and form.validate():
+		add_presentation(form.url.data, form.owner.data)
+		if current_user.is_authenticated():
+			return render_template("home.html", presentations=get_presentations_and_is_selected(), 
+        		current_user=current_user)
+		else:
+			return redirect(url_for('login'))
+	return render_template("submit-presentation.html", form=form)
+
+def add_presentation(url, owner):
+	presentation = Presentation(url, owner)
+	db.session.add(presentation)
+	db.session.commit()
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():

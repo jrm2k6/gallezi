@@ -39,7 +39,7 @@ class Presentation(db.Model):
 
 	def __init__(self, url='', owner=''):
 		self.url = url
-		owner = owner
+		self.owner = owner
 
 	def __repr__(self):
 		return '<Presentation %r %r>' % (self.url, self.owner)
