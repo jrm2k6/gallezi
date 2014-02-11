@@ -80,17 +80,27 @@ def home():
 @app.route('/vote/<int:id_presentation>', methods=['POST'])
 @login_required
 def vote(id_presentation):
-	print 'id_presentation' + str(id_presentation) 
+	response = ({}, 200)
 	vote = get_vote(id_presentation, current_user.id)
-	if vote is None:
-		print 'vote is none'
-		vote = Vote(id_presentation, current_user.id)
-		db.session.add(vote)
+	if vote is None :
+		is_allowed_to_vote = check_number_votes_for_current_user() < config.MAXIMUM_NUMBER_VOTES
+		if is_allowed_to_vote:
+			vote = Vote(id_presentation, current_user.id)
+			db.session.add(vote)
+		else:
+			response = not_allowed_to_vote_response()
 	else:
 		db.session.delete(vote)
 	db.session.commit()
-	resp = Response({}, status=200, mimetype='application/json')
+	resp = Response(response[0], status=response[1], mimetype='application/json')
 	return resp
 
+def not_allowed_to_vote_response():
+	return ({'maximum-number-of-votes-reached'}, 401)
+
+def check_number_votes_for_current_user():
+	nb_votes = Vote.query.filter_by(user=current_user.id).count()
+	return nb_votes
+	
 if __name__ == '__main__':
 	app.run(debug=True)
