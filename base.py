@@ -8,7 +8,7 @@ from authentication import requires_auth
 from flask.ext.login import LoginManager, login_user, login_required, \
 logout_user, current_user
 from forms import LoginForm, AddPresentationForm
-import config
+from config import SECRET, MAXIMUM_NUMBER_VOTES, PASSWORD_SUBMISSION
 
 app = Flask(__name__)
 lm = LoginManager()
@@ -58,7 +58,7 @@ def add_presentation(url, owner):
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-    	if (form.password.data == config.SECRET):
+    	if (form.password.data == SECRET):
     		user = get_user(form.email.data)
     		message_welcome = "Welcome back!"
     		if user is None:
@@ -121,7 +121,7 @@ def vote(id_presentation):
 	response = ({'OK'}, 200)
 	vote = get_vote(id_presentation, current_user.id)
 	if vote is None :
-		is_allowed_to_vote = check_number_votes_for_current_user() < config.MAXIMUM_NUMBER_VOTES
+		is_allowed_to_vote = check_number_votes_for_current_user() < MAXIMUM_NUMBER_VOTES
 		if is_allowed_to_vote:
 			vote = Vote(id_presentation, current_user.id)
 			db.session.add(vote)
