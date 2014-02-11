@@ -1,4 +1,5 @@
-from flask import Flask, render_template, Response, flash, redirect, url_for, request
+from flask import Flask, render_template, Response, flash, \
+redirect, url_for, request
 from flask.ext.admin import Admin
 from flask.ext.admin.contrib.sqla import ModelView
 from adminviews import GalleryUserView, GalleryPresentationView
@@ -45,6 +46,7 @@ def submit_presentation():
 		else:
 			return redirect(url_for('login'))
 	return render_template("submit-presentation.html", form=form)
+
 
 def add_presentation(url, owner):
 	presentation = Presentation(url, owner)
