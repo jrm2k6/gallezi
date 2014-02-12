@@ -49,6 +49,11 @@ def submit_presentation():
 	return render_template("submit-presentation.html", form=form)
 
 
+@app.route("/results", methods=["GET"])
+@login_required
+def show_results():
+	return render_template("results.html")
+
 def add_presentation(url, owner):
 	presentation = Presentation(url, owner)
 	db.session.add(presentation)
