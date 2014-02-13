@@ -13,12 +13,43 @@
 </head>
 </body>
 <div id="topbar">
-	<a href="/logout">Sign out</a>
+      <div class="options">
+            <button type="button" class="btn btn-lg btn-success signout" data-toggle="modal" data-target="#about-modal">About</button>
+            <button type="button" class="btn btn-lg btn-info signout"><a href="/logout">Sign out</a></button>
+      </div>
+</div>
+<div class="modal fade" id="about-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">About Gallezi</h4>
+      </div>
+      <div class="modal-body">
+        Gallezi (contracted from Gallery and Prezi) provides an easy way to display Prezis.
+        It also offers a vote system which could use in a design contest or something equivalent.
+        <br />
+        Gallezi has been developed and designed by <a href="http://flask-blog.jeremydagorn.com" target="_blank">Jeremy Dagorn</a>. 
+        <br />It is open source and you can clone and modify it at your convenience.
+        <br /><br />
+        To reach the developer:<br />
+        <a href="http://twitter.com/jrm2k6" target="_blank">@jrm2k6</a><br />
+        <a href="http://github.com/gallezi" target="_blank">Github project</a><br />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% for category, message in get_flashed_messages(with_categories=true) %}
       <div class="alert 
       {% if category %}
-      	alert-{{category}}
+            {% if category != "message" %}
+      	     alert-{{category}}
+            {% else %}
+                  alert-warning
+            {% endif %}
       {% else %}
       	alert-info
       {% endif %} 

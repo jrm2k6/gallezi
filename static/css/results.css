@@ -1,0 +1,15 @@
+.masonry .iframe-prezi {
+  width:  500px !important;
+  height: 400px !important;
+  margin: 10px 10px 10px 10px !important;
+  margin-bottom: 50px !important;
+}
+
+.owners {
+	font-size: 18px;
+	text-align: center;
+}
+
+.ranking {
+	margin-top: 50px;
+}

@@ -1,3 +1,46 @@
 {% extends "base.html" %}
+{% block css %}
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/results.css') }}"></link>
+{% endblock %}
 {% block body %}
+<div class="container">
+	<div class="statistics">
+	<h2>Number of users who voted: {{ nb_votes }} </h2>
+	</div>
+	<div class="winner">
+		<h1> Winner </h1>
+		<div class="masonry js-masonry"  data-masonry-options='{ "columnWidth": ".iframe-prezi", "itemSelector": ".iframe-prezi", "isFitWidth": true, "gutter": 10}'>
+			<div class="iframe-prezi">
+				<iframe id="presentation_iframe" src="{{winner[1]}}?bgcolor=ffffff&amp;lock_to_path=0&amp;autoplay=0&amp;autohide_ctrls=0&amp;features=undefined&amp;disabled_features=undefined" width="500" height="400" frameBorder="0"></iframe>
+				<div class="info">
+					<div class="owners">
+					{{ winner[2] }}
+					</div>
+				</div>
+	  		</div>
+		</div>
+	</div>
+	<div class="ranking">
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Owner</th>
+					<th> URL </th>
+					<th> # Votes </th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for elem in rankings %}
+			<tr {% if loop.first %} class="success" {% elif loop.last %} class="danger" {% endif %}>
+				<td> {{ loop.index }} </td>
+				<td> {{ elem[2] }} </td>
+				<td> <a href={{ elem[1] }} target="_blank"> {{ elem[1] }} </a></td>
+				<td> {{ elem[3] }} </td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
 {% endblock %}

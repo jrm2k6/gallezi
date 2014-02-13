@@ -7,6 +7,7 @@ from models import db, User, Presentation, Vote
 from authentication import requires_auth
 from flask.ext.login import LoginManager, login_user, login_required, \
 logout_user, current_user
+from sqlalchemy import func, distinct, desc
 from forms import LoginForm, AddPresentationForm
 from config import SECRET, MAXIMUM_NUMBER_VOTES, PASSWORD_SUBMISSION
 
@@ -49,10 +50,33 @@ def submit_presentation():
 	return render_template("submit-presentation.html", form=form)
 
 
+@app.route("/login-admin", methods=["POST", "GET"])
+def login_admin():
+	form = LoginForm(request.form)
+	if request.method == 'POST' and form.validate():
+		if form.password.data == PASSWORD_ADMIN:
+				return redirect(url_for('login'))
+	return render_template("login-admin.html", form=form)
+
+
 @app.route("/results", methods=["GET"])
 @login_required
 def show_results():
-	return render_template("results.html")
+	winner, most_voted = get_most_voted_presentation(3)
+	return render_template("results.html", nb_votes=get_nb_users_voting(), rankings=most_voted, 
+		winner=winner)
+
+
+def get_nb_users_voting():
+	nb_users = db.session.query(Vote.user).distinct().count()
+	print nb_users
+	return nb_users
+
+def get_most_voted_presentation(number_presentations):
+	most_voted = db.session.query(Vote.id, Presentation.url, Presentation.owner, func.count(Vote.id))\
+					.join(Presentation).group_by(Presentation.url)\
+					.order_by(desc(func.count(Vote.id))).limit(number_presentations)
+	return most_voted.first(), most_voted
 
 def add_presentation(url, owner):
 	presentation = Presentation(url, owner)
