@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block css %}
+<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/login.css') }}"></link>
+{% endblock %}
+{% block body %}
+<div class="background"></div>
+<div class="container">
+	<div class="form">
+		<form method=post action="/login-admin" role="form">
+	    {% for field in form %}
+	    <div class="form-group">
+	    	{{ field.label}}
+	    	{{ field(class="form-control input-lg") }}
+		</div>
+	    {% endfor %}
+	  	<p><input type=submit class="btn btn-primary btn-lg btn-block" value="Sign in">
+		</form>
+	</div>
+</div>
+{% endblock %}
