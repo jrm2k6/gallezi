@@ -6,13 +6,18 @@
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 	<link rel=stylesheet type="text/css" href="{{ url_for('static', filename='css/home.css') }}"></link>
 	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+      <link href='http://fonts.googleapis.com/css?family=Condiment' rel='stylesheet' type='text/css'>
 	<script type=text/javascript src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}"></script>
 	<script type=text/javascript src="{{ url_for('static', filename='js/home.js') }}"></script>
+      <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}"/>
 {% block js_script %}{% endblock %}
 {% block css %}{% endblock %}
 </head>
 </body>
 <div id="topbar">
+      <div class="title">
+            Gallezi
+      </div>
       <div class="options">
             <button type="button" class="btn btn-lg btn-success signout" data-toggle="modal" data-target="#about-modal">About</button>
             <button type="button" class="btn btn-lg btn-info signout"><a href="/logout">Sign out</a></button>

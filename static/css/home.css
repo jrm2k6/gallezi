@@ -43,3 +43,13 @@
 	margin-right: 10px;
 	float: right;
 }
+
+.title {
+	font-family: 'Condiment', cursive;
+	color: white;
+	float:left;
+	position: relative;
+	top: 25%;
+	left :45%;
+	font-size: 45px;
+}
