@@ -2,7 +2,7 @@ from flask import Flask, render_template, Response, flash, \
 redirect, url_for, request
 from flask.ext.admin import Admin
 from flask.ext.admin.contrib.sqla import ModelView
-from adminviews import GalleryUserView, GalleryPresentationView
+from adminviews import GalleryUserView, GalleryPresentationView, GalleryVoteView
 from models import db, User, Presentation, Vote
 from authentication import requires_auth
 from flask.ext.login import LoginManager, login_user, login_required, \
@@ -26,7 +26,7 @@ create_app(db)
 admin = Admin(app)
 lm.init_app(app)
 lm.login_view = "login"
-admin.add_view(ModelView(Vote, db.session))
+admin.add_view(GalleryVoteView(db.session))
 admin.add_view(GalleryUserView(db.session))
 admin.add_view(GalleryPresentationView(db.session))
 

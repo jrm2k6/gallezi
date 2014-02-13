@@ -9,3 +9,6 @@ MAXIMUM_NUMBER_VOTES = "<insert_max_number_here>"
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'jdblog.db')
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'migrations')
+
+# Add your administrator emails here.
+EMAIL_ADMINS = []
