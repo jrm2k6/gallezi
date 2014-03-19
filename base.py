@@ -4,7 +4,7 @@ from flask.ext.admin import Admin
 from flask.ext.admin.contrib.sqla import ModelView
 from adminviews import GalleryUserView, GalleryPresentationView, GalleryVoteView
 from models import db, User, Presentation, Vote
-from authentication import requires_auth
+#from authentication import requires_auth
 from flask.ext.login import LoginManager, login_user, login_required, \
 logout_user, current_user
 from sqlalchemy import func, distinct, desc
@@ -137,18 +137,20 @@ def get_presentations_and_is_selected():
 	results = []
 
 	for p in presentations:
-		found = False
-		for v in votes:
-			if v.vote_presentation.id == p.id:
-				found = True
-		results.append((p, found))
+		if p.id is not None:
+			found = False
+			for v in votes:
+				if v.vote_presentation.id == p.id:
+					found = True
+			results.append((p, found))
 	return results
 
 
 @app.route('/vote/<int:id_presentation>', methods=['POST'])
 @login_required
 def vote(id_presentation):
-	response = ({'OK'}, 200)
+	response_message = 'OK'
+        response_status_code = 200
 	vote = get_vote(id_presentation, current_user.id)
 	if vote is None :
 		is_allowed_to_vote = check_number_votes_for_current_user() < MAXIMUM_NUMBER_VOTES
@@ -156,15 +158,15 @@ def vote(id_presentation):
 			vote = Vote(id_presentation, current_user.id)
 			db.session.add(vote)
 		else:
-			response = not_allowed_to_vote_response()
+			response_message, response_status_code = not_allowed_to_vote_response()
 	else:
 		db.session.delete(vote)
 	db.session.commit()
-	resp = Response(response[0], status=response[1], mimetype='application/json')
+	resp = Response(response_message, status=response_status_code, mimetype='application/json')
 	return resp
 
 def not_allowed_to_vote_response():
-	return ({'maximum-number-of-votes-reached'}, 401)
+	return 'maximum-number-of-votes-reached', 401
 
 def check_number_votes_for_current_user():
 	nb_votes = Vote.query.filter_by(user=current_user.id).count()
