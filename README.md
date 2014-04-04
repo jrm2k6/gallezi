@@ -32,4 +32,4 @@ It is also easy to extend for any kind of presentation, embeddable.
 ![Login](screenshots/login.png)
 ![Home](screenshots/home_2.png)
 ![Results](screenshots/results.png)
-![Submit presentation](screenshots/submit_presentation.pgn)
+![Submit presentation](screenshots/submit_presentation.png)
