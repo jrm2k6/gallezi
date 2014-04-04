@@ -30,6 +30,6 @@ It is also easy to extend for any kind of presentation, embeddable.
 
 ### Screenshots ###
 ![Login](screenshots/login.png)
-![Home](screenshots/home.png)
+![Home](screenshots/home_2.png)
 ![Results](screenshots/results.png)
-![Submit presentation](screenshots/submit.pgn)
+![Submit presentation](screenshots/submit_presentation.pgn)
